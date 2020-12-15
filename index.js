@@ -27,8 +27,6 @@ camera.position.z = 5;
 //LIGHTS
 const light1 = new THREE.AmbientLight(0xffffff, 1);
 const light2 = new THREE.SpotLight(0xffffff);
-// light2.position.x = window.innerWidth / 2;
-// light2.position.y = window.innerHeight / 2;
 light2.position.z = 10;
 scene.add(light1);
 scene.add(light2);
@@ -51,28 +49,32 @@ window.addEventListener("mousemove", onMouseMove, false);
 
 function onMouseMove(e) {
   if (
-    e.clientX > window.innerWidth / 2 - 150 &&
-    e.clientX < window.innerWidth / 2 + 150
-  ) {
-    helmet.rotation.y = 0;
-  } else {
-    if (e.clientX < window.innerWidth / 2) {
-      helmet.rotation.y = -0.2;
-    } else {
-      helmet.rotation.y = 0.2;
-    }
-  }
-
-  if (
-    e.clientY > window.innerHeight / 2 - 150 &&
-    e.clientY < window.innerHeight / 2 + 150
+    e.clientY > window.innerHeight / 2 - 25 &&
+    e.clientY < window.innerHeight / 2 + 25
   ) {
     helmet.rotation.x = 0;
   } else {
     if (e.clientY < window.innerHeight / 2) {
-      helmet.rotation.x = -0.2;
+      helmet.rotation.x =
+        (e.clientY - window.innerWidth) / window.innerWidth / 2;
     } else {
-      helmet.rotation.x = 0.2;
+      helmet.rotation.x =
+        0.5 + (e.clientY - window.innerWidth) / window.innerWidth / 2;
+    }
+  }
+
+  if (
+    e.clientX > window.innerWidth / 2 - 25 &&
+    e.clientX < window.innerWidth / 2 + 25
+  ) {
+    helmet.rotation.y = 0;
+  } else {
+    if (e.clientX < window.innerWidth / 2) {
+      helmet.rotation.y =
+        (e.clientX - window.innerWidth) / window.innerWidth / 2;
+    } else {
+      helmet.rotation.y =
+        0.5 + (e.clientX - window.innerWidth) / window.innerWidth / 2;
     }
   }
 }
