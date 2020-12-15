@@ -11,7 +11,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById("canvas"),
   antialias: true,
 });
-renderer.setClearColor(0x25c8ce);
+renderer.setClearColor(0x111111);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -31,9 +31,32 @@ light2.position.z = 10;
 scene.add(light1);
 scene.add(light2);
 
+// Load Manager
+const manager = new THREE.LoadingManager();
+manager.onStart = (url, itemsLoaded, itemsTotal) => {
+  document.getElementById("progressLoading").innerText = "Loading Files ...";
+};
+
+manager.onProgress = (url, itemsLoaded, itemsTotal) => {
+  document.getElementById(
+    "progressLoading"
+  ).innerText = `Loading Files ... ${itemsLoaded}/${itemsTotal}`;
+};
+
+manager.onLoad = () => {
+  document.getElementById("progressLoading").style.display = "none";
+};
+
+manager.onError = function (url) {
+  console.log("There was an error loading " + url);
+  document.getElementById(
+    "progressLoading"
+  ).innerText = `Error loading the file ${url}`;
+};
+
 //OBJECT
 const loader = new OBJLoader();
-const mtlLoader = new MTLLoader();
+const mtlLoader = new MTLLoader(manager);
 let helmet;
 mtlLoader.load("./eyeball.mtl", (materials) => {
   materials.preload();
