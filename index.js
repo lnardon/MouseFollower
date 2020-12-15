@@ -1,7 +1,7 @@
 // IMPORTS
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/OBJLoader.js";
+import { MTLLoader } from "https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/loaders/MTLLoader.js";
 
 //SCENE
 const scene = new THREE.Scene();
@@ -25,35 +25,55 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 5;
 
 //LIGHTS
-const light1 = new THREE.AmbientLight(0xffffff, 0.5),
-  light2 = new THREE.PointLight(0xffffff, 1);
-
+const light1 = new THREE.AmbientLight(0xffffff, 1);
+const light2 = new THREE.SpotLight(0xffffff);
+// light2.position.x = window.innerWidth / 2;
+// light2.position.y = window.innerHeight / 2;
+light2.position.z = 10;
 scene.add(light1);
 scene.add(light2);
 
 //OBJECT
-const box = new THREE.Mesh(
-  new THREE.BoxBufferGeometry(),
-  new THREE.MeshNormalMaterial()
-);
-box.geometry.translate(0, 0, 0.5);
-box.scale.set(1, 1, 1);
-scene.add(box);
+const loader = new OBJLoader();
+const mtlLoader = new MTLLoader();
+let helmet;
+mtlLoader.load("./eyeball.mtl", (materials) => {
+  materials.preload();
+  loader.setResourcePath("./textures/");
+  loader.setMaterials(materials);
+  loader.load("./eyeball.obj", (object) => {
+    helmet = object;
+    scene.add(helmet);
+  });
+});
 
 window.addEventListener("mousemove", onMouseMove, false);
 
 function onMouseMove(e) {
-  console.log(box.rotation);
-  if (e.clientX < window.innerWidth / 2) {
-    box.rotation.y = -0.2;
+  if (
+    e.clientX > window.innerWidth / 2 - 150 &&
+    e.clientX < window.innerWidth / 2 + 150
+  ) {
+    helmet.rotation.y = 0;
   } else {
-    box.rotation.y = 0.2;
+    if (e.clientX < window.innerWidth / 2) {
+      helmet.rotation.y = -0.2;
+    } else {
+      helmet.rotation.y = 0.2;
+    }
   }
 
-  if (e.clientY < window.innerHeight / 2) {
-    box.rotation.x = -0.2;
+  if (
+    e.clientY > window.innerHeight / 2 - 150 &&
+    e.clientY < window.innerHeight / 2 + 150
+  ) {
+    helmet.rotation.x = 0;
   } else {
-    box.rotation.x = 0.2;
+    if (e.clientY < window.innerHeight / 2) {
+      helmet.rotation.x = -0.2;
+    } else {
+      helmet.rotation.x = 0.2;
+    }
   }
 }
 
