@@ -17,11 +17,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 //CAMERA
 const camera = new THREE.PerspectiveCamera(
-  35,
+  70,
   window.innerWidth / window.innerHeight,
   0.1,
   3000
 );
+camera.position.z = 5;
 
 //LIGHTS
 const light1 = new THREE.AmbientLight(0xffffff, 0.5),
@@ -31,20 +32,37 @@ scene.add(light1);
 scene.add(light2);
 
 //OBJECT
-const geometry = new THREE.CubeGeometry(100, 100, 100);
-const material = new THREE.MeshLambertMaterial({ color: 0xf3ffe2 });
-const mesh = new THREE.Mesh(geometry, material);
+const box = new THREE.Mesh(
+  new THREE.BoxBufferGeometry(),
+  new THREE.MeshNormalMaterial()
+);
+box.geometry.translate(0, 0, 0.5);
+box.scale.set(1, 1, 1);
+scene.add(box);
+
+window.addEventListener("mousemove", onMouseMove, false);
+
+function onMouseMove(e) {
+  console.log(box.rotation);
+  if (e.clientX < window.innerWidth / 2) {
+    box.rotation.y = -0.2;
+  } else {
+    box.rotation.y = 0.2;
+  }
+
+  if (e.clientY < window.innerHeight / 2) {
+    box.rotation.x = -0.2;
+  } else {
+    box.rotation.x = 0.2;
+  }
+}
 
 //RENDER LOOP
 requestAnimationFrame(render);
-
 function render() {
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.03;
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 }
-
 window.addEventListener(
   "resize",
   function () {
