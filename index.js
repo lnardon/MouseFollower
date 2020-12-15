@@ -45,38 +45,15 @@ mtlLoader.load("./eyeball.mtl", (materials) => {
   });
 });
 
+// FUNCTION TO CONVERT COORDINATES
+// (x/width) * 2 -1
+// -(y/height) * 2 +1
+
 window.addEventListener("mousemove", onMouseMove, false);
 
 function onMouseMove(e) {
-  if (
-    e.clientY > window.innerHeight / 2 - 25 &&
-    e.clientY < window.innerHeight / 2 + 25
-  ) {
-    helmet.rotation.x = 0;
-  } else {
-    if (e.clientY < window.innerHeight / 2) {
-      helmet.rotation.x =
-        (e.clientY - window.innerWidth) / window.innerWidth / 2;
-    } else {
-      helmet.rotation.x =
-        0.5 + (e.clientY - window.innerWidth) / window.innerWidth / 2;
-    }
-  }
-
-  if (
-    e.clientX > window.innerWidth / 2 - 25 &&
-    e.clientX < window.innerWidth / 2 + 25
-  ) {
-    helmet.rotation.y = 0;
-  } else {
-    if (e.clientX < window.innerWidth / 2) {
-      helmet.rotation.y =
-        (e.clientX - window.innerWidth) / window.innerWidth / 2;
-    } else {
-      helmet.rotation.y =
-        0.5 + (e.clientX - window.innerWidth) / window.innerWidth / 2;
-    }
-  }
+  helmet.rotation.x = (e.clientY / window.innerHeight) * 2 - 1;
+  helmet.rotation.y = (e.clientX / window.innerWidth) * 2 - 1;
 }
 
 //RENDER LOOP
