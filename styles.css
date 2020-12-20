@@ -29,3 +29,13 @@ body {
   font-weight: bold;
   z-index: 100;
 }
+
+#github {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
+
+#github > img {
+  width: 225px;
+}
