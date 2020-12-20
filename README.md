@@ -1,6 +1,6 @@
 # Mouse Follower
 
-A simple website with a eye that follows the cursor using Three.js
+A website with a 3d model that follows the cursor using Three.js
 
 <p align="center">
   <img src="./demo.gif">
